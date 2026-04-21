@@ -96,7 +96,7 @@ Tab Out 是一个 Chrome 扩展，帮你把所有打开的标签页按网站自�
 1. 克隆仓库：
 
 ```bash
-git clone https://github.com/zarazhangrui/tab-out.git
+git clone https://github.com/feichaoyu/tab-out.git
 cd tab-out
 ```
 
@@ -128,4 +128,4 @@ MIT
 
 ---
 
-Built by [Zara](https://x.com/zarazhangrui)
+Built by [tab-out](https://github.com/zarazhangrui/tab-out)
