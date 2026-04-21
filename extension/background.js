@@ -89,6 +89,41 @@ async function injectContentScripts() {
   }
 }
 
+async function injectContentScript(tabId) {
+  await chrome.scripting.executeScript({
+    target: { tabId },
+    files: ['content.js']
+  });
+}
+
+async function openSidePanelFallback(tab) {
+  if (!chrome.sidePanel?.open) return;
+
+  try {
+    await chrome.sidePanel.open({ windowId: tab.windowId });
+  } catch (err) {
+    console.warn('[tab-out] Could not open side panel fallback:', err);
+  }
+}
+
+async function toggleTabOutForActiveTab() {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (!tab?.id) return;
+
+  try {
+    await chrome.tabs.sendMessage(tab.id, { action: 'toggle-tab-out-modal' });
+    return;
+  } catch {}
+
+  try {
+    await injectContentScript(tab.id);
+    await chrome.tabs.sendMessage(tab.id, { action: 'toggle-tab-out-modal' });
+  } catch (err) {
+    console.warn('[tab-out] Could not toggle in-page modal:', err);
+    await openSidePanelFallback(tab);
+  }
+}
+
 // ─── Event listeners ──────────────────────────────────────────────────────────
 
 // Update badge when the extension is first installed
@@ -122,6 +157,12 @@ chrome.tabs.onRemoved.addListener(() => {
 // Update badge when a tab's URL changes (e.g. navigating to/from chrome://)
 chrome.tabs.onUpdated.addListener(() => {
   updateBadge();
+});
+
+chrome.commands.onCommand.addListener((command) => {
+  if (command === 'toggle-tab-out') {
+    toggleTabOutForActiveTab();
+  }
 });
 
 // ─── Initial run ─────────────────────────────────────────────────────────────

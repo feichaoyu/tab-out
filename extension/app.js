@@ -1187,6 +1187,10 @@ async function buildDomainGroups() {
     groupMap['__landing-pages__'] = { domain: '__landing-pages__', tabs: landingTabs, maxLastAccessed: maxLandingTime };
   }
 
+  Object.values(groupMap).forEach(group => {
+    group.tabs = SavedTabsModel.sortTabsByPriority(group.tabs);
+  });
+
   // Sort: landing pages first, then other domains by maxLastAccessed desc
   domainGroups = Object.values(groupMap).sort((a, b) => {
     const aIsLanding = a.domain === '__landing-pages__';

@@ -7,8 +7,8 @@
  */
 
 (function() {
-  // Prevent double injection
-  if (document.getElementById('tab-out-floating-root')) return;
+  // Recreate stale UI when the background injects a fresh content script.
+  document.getElementById('tab-out-floating-root')?.remove();
 
   const root = document.createElement('div');
   root.id = 'tab-out-floating-root';
@@ -290,6 +290,14 @@
     document.body.style.overflow = '';
   }
 
+  function toggleModal() {
+    if (overlay.classList.contains('open')) {
+      closeModal();
+    } else {
+      openModal();
+    }
+  }
+
   overlay.addEventListener('click', (e) => {
     // Treat clicks outside the iframeContainer as dismiss actions
     // Also ignore if we just finished resizing
@@ -303,18 +311,14 @@
     // Cmd+E (Mac) or Ctrl+E (Windows) to toggle modal
     if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'e') {
       e.preventDefault();
-      if (overlay.classList.contains('open')) {
-        closeModal();
-      } else {
-        openModal();
-      }
+      toggleModal();
     }
     
     // Esc key to close modal
     if (e.key === 'Escape' && overlay.classList.contains('open')) {
       closeModal();
     }
-  });
+  }, true);
 
   // --- Dragging Logic ---
   let isDragging = false;
@@ -418,6 +422,12 @@
   window.addEventListener('message', (e) => {
     if (e.data && e.data.action === 'close_modal') {
       closeModal();
+    }
+  });
+
+  chrome.runtime.onMessage.addListener((message) => {
+    if (message?.action === 'toggle-tab-out-modal') {
+      toggleModal();
     }
   });
 

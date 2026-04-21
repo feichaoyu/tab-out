@@ -141,6 +141,21 @@
     );
   }
 
+  function getTabPriorityTimestamp(tab = {}) {
+    return (
+      tab.lastAccessed ||
+      (tab.restoredAt ? new Date(tab.restoredAt).getTime() : 0) ||
+      (tab.savedAt ? new Date(tab.savedAt).getTime() : 0) ||
+      0
+    );
+  }
+
+  function sortTabsByPriority(tabs = []) {
+    return tabs
+      .slice()
+      .sort((a, b) => getTabPriorityTimestamp(b) - getTabPriorityTimestamp(a));
+  }
+
   function renderDeferredActions(item) {
     const id = escapeAttr(typeof item === 'string' ? item : (item?.id || ''));
     return `
@@ -160,6 +175,7 @@
     removeRestoredEntry,
     removeDeferredEntry,
     mergeDisplayTabs,
+    sortTabsByPriority,
     renderDeferredActions,
   };
 
