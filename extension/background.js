@@ -60,11 +60,48 @@ async function updateBadge() {
   }
 }
 
+// ─── Injection Helper (for updates/install) ───────────────────────────────────
+
+/**
+ * injectContentScripts()
+ * 
+ * Programmatically injects the content script into all eligible tabs.
+ * This ensures the extension works immediately on existing tabs after 
+ * installation or update without requiring a manual page refresh.
+ */
+async function injectContentScripts() {
+  try {
+    const tabs = await chrome.tabs.query({ url: ['http://*/*', 'https://*/*', 'file://*/*'] });
+    for (const tab of tabs) {
+      // Skip internal chrome pages or broken tabs
+      if (!tab.url || tab.url.startsWith('chrome://')) continue;
+
+      chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        files: ['content.js']
+      }).catch(err => {
+        // Expected for restricted pages (e.g. Chrome Web Store)
+        console.warn(`[tab-out] Could not inject into tab ${tab.id}:`, err);
+      });
+    }
+  } catch (err) {
+    console.error('[tab-out] Bulk injection failed:', err);
+  }
+}
+
 // ─── Event listeners ──────────────────────────────────────────────────────────
 
 // Update badge when the extension is first installed
-chrome.runtime.onInstalled.addListener(() => {
+chrome.runtime.onInstalled.addListener((details) => {
   updateBadge();
+  
+  // If installed or updated, push the content script to all existing pages
+  if (details.reason === 'install' || details.reason === 'update') {
+    injectContentScripts();
+  }
+
+  chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true })
+    .catch((error) => console.error(error));
 });
 
 // Update badge when Chrome starts up
@@ -91,3 +128,5 @@ chrome.tabs.onUpdated.addListener(() => {
 
 // Run once immediately when the service worker first loads
 updateBadge();
+chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true })
+  .catch((error) => console.error(error));

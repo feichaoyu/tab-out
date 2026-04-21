@@ -1,84 +1,124 @@
 # Tab Out
 
-**Keep tabs on your tabs.**
+**把满屏标签页变成一张清爽的控制台。**
 
-Tab Out is a Chrome extension that replaces your new tab page with a dashboard of everything you have open. Tabs are grouped by domain, with homepages (Gmail, X, LinkedIn, etc.) pulled into their own group. Close tabs with a satisfying swoosh + confetti.
-
-No server. No account. No external API calls. Just a Chrome extension.
+Tab Out 是一个 Chrome 扩展，帮你把所有打开的标签页按网站自动分组，一眼看清浏览器里到底开了什么。你可以快速跳转、关闭重复标签、把暂时不看的页面保存起来，整个过程都在本地完成，不需要账号，也不会把数据发到外部服务器。
 
 ---
 
-## Install with a coding agent
+## 这次升级带来了什么
 
-Send your coding agent (Claude Code, Codex, etc.) this repo and say **"install this"**:
+相比原来的 Tab Out，这个版本不只是“打开一个新标签页看列表”，而是变成了一个随时可唤起的标签页管理面板。
 
-```
-https://github.com/zarazhangrui/tab-out
-```
+### 更容易打开
 
-The agent will walk you through it. Takes about 1 minute.
+原来你主要需要打开新标签页才能看到 Tab Out。现在有了更多入口：
+
+- **点击扩展图标打开侧边栏**，不用离开当前页面就能管理标签页。
+- **网页右下角有悬浮按钮**，需要整理标签时随手点开。
+- **悬浮面板可以调整大小**，适合不同屏幕和不同工作场景。
+- **按钮位置和面板大小会被记住**，下次打开还是你习惯的位置。
+
+### 更快找到标签页
+
+原来标签多的时候，只能靠分组慢慢找。现在新增了全局搜索：
+
+- 直接搜索标签标题或网址。
+- 搜索结果会自动重新排版，匹配项集中显示，不会留下大片空白。
+- 标签很多时也更顺滑，减少搜索时卡顿的感觉。
+- `Cmd/Ctrl + F` 可以快速聚焦搜索框。
+
+### 更适合键盘操作
+
+如果你喜欢少用鼠标，这版更顺手：
+
+- 用方向键在标签之间移动。
+- 按 Enter 打开当前选中的标签。
+- 按 Esc 退出搜索或关闭面板。
+- 用 `Cmd/Ctrl + E` 快速关闭页面内面板。
+
+### “稍后阅读”更灵活
+
+原来的保存功能更像一个简单清单。现在它更像一个可以来回整理的待办区：
+
+- 保存标签后，它会进入右侧的 “Saved for Later” 清单。
+- 点击保存项后，可以先把它移回左侧列表，先确认再打开。
+- 左侧恢复出来的项目可以打开、移除，或者重新保存回稍后阅读。
+- 已完成的归档项可以删除，清理更彻底。
+
+### 标签状态更实时
+
+原来页面打开后，标签变化可能需要手动刷新或重新进入。现在浏览器里的标签有变化时，Tab Out 会更主动地同步：
+
+- 新开标签会自动出现。
+- 关闭标签后列表会更新。
+- 页面标题或网址变化后会刷新。
+- 保存列表变化后左右两侧都会同步。
+
+### 分组更贴近最近使用
+
+原来分组更偏向按数量或固定优先级展示。现在会更关注最近访问的内容：
+
+- Homepages 仍然优先展示，方便一次性清理 Gmail、YouTube、GitHub、X 等首页类标签。
+- 其他分组会更偏向最近使用的页面，减少找当前工作上下文的时间。
+- localhost 页面仍会显示端口号，方便区分本地开发项目。
 
 ---
 
-## Features
+## 保留的核心能力
 
-- **See all your tabs at a glance** on a clean grid, grouped by domain
-- **Homepages group** pulls Gmail inbox, X home, YouTube, LinkedIn, GitHub homepages into one card
-- **Close tabs with style** with swoosh sound + confetti burst
-- **Duplicate detection** flags when you have the same page open twice, with one-click cleanup
-- **Click any tab to jump to it** across windows, no new tab opened
-- **Save for later** bookmark tabs to a checklist before closing them
-- **Localhost grouping** shows port numbers next to each tab so you can tell your vibe coding projects apart
-- **Expandable groups** show the first 8 tabs with a clickable "+N more"
-- **100% local** your data never leaves your machine
-- **Pure Chrome extension** no server, no Node.js, no npm, no setup beyond loading the extension
+- **按域名分组**：同一个网站的标签自动聚在一起。
+- **Homepages 单独成组**：常见首页类页面集中清理。
+- **重复标签检测**：相同页面会显示重复数量，可以一键保留一个。
+- **点击标题跳转标签**：跨 Chrome 窗口也能跳过去。
+- **单个关闭或整组关闭**：快速清掉不需要的标签。
+- **关闭动效**：保留 swoosh 音效和纸屑动画。
+- **100% 本地**：数据存储在浏览器本地，没有服务器、账号或外部 API。
 
 ---
 
-## Manual Setup
+## 使用方式
 
-**1. Clone the repo**
+安装扩展后，你可以这样使用：
+
+1. 点击 Chrome 工具栏里的 **Tab Out** 扩展图标，打开侧边栏。
+2. 或者在网页右下角点击 **Tab Out 悬浮按钮**，打开浮层面板。
+3. 在面板中查看按网站分组的标签页。
+4. 用搜索框快速找到标签。
+5. 点击标签标题跳转，点击关闭按钮清理。
+6. 对暂时不想处理的标签，点击保存按钮放进稍后阅读。
+7. 对重复标签，点击关闭重复项，只保留一份。
+
+---
+
+## 安装
+
+1. 克隆仓库：
 
 ```bash
 git clone https://github.com/zarazhangrui/tab-out.git
+cd tab-out
 ```
 
-**2. Load the Chrome extension**
+2. 打开 Chrome 扩展管理页：
 
-1. Open Chrome and go to `chrome://extensions`
-2. Enable **Developer mode** (top-right toggle)
-3. Click **Load unpacked**
-4. Navigate to the `extension/` folder inside the cloned repo and select it
+```text
+chrome://extensions
+```
 
-**3. Open a new tab**
+3. 开启右上角 **Developer mode**。
 
-You'll see Tab Out.
+4. 点击 **Load unpacked**。
+
+5. 选择本仓库里的 `extension/` 文件夹。
+
+安装完成后，Chrome 工具栏会出现 Tab Out 图标。打开普通网页后，也会看到 Tab Out 的悬浮入口。
 
 ---
 
-## How it works
+## 一句话总结
 
-```
-You open a new tab
-  -> Tab Out shows your open tabs grouped by domain
-  -> Homepages (Gmail, X, etc.) get their own group at the top
-  -> Click any tab title to jump to it
-  -> Close groups you're done with (swoosh + confetti)
-  -> Save tabs for later before closing them
-```
-
-Everything runs inside the Chrome extension. No external server, no API calls, no data sent anywhere. Saved tabs are stored in `chrome.storage.local`.
-
----
-
-## Tech stack
-
-| What | How |
-|------|-----|
-| Extension | Chrome Manifest V3 |
-| Storage | chrome.storage.local |
-| Sound | Web Audio API (synthesized, no files) |
-| Animations | CSS transitions + JS confetti particles |
+新版 Tab Out 更像一个随叫随到的浏览器工作台：不用离开当前页面，就能搜索、跳转、恢复、保存和清理标签页。它保留了原来简单、本地、无账号的特点，同时让重度标签页用户整理浏览器更快、更顺手。
 
 ---
 
